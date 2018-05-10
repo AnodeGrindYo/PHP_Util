@@ -23,7 +23,7 @@ function get_client_ip_env()
 
 function getOS() 
 { 
-    global $user_agent;
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
     $os_platform  = "Unknown OS Platform";
 
@@ -52,4 +52,37 @@ function getOS()
                           '/blackberry/i'         =>  'BlackBerry',
                           '/webos/i'              =>  'Mobile'
                     );
+    foreach ($os_array as $regex => $value)
+    {
+        if (preg_match($regex, $user_agent))
+            $os_platform = $value;
+    }
+
+    return $os_platform;
+}
+
+function getBrowser() {
+
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+    $browser        = "Unknown Browser";
+
+    $browser_array = array(
+                            '/msie/i'      => 'Internet Explorer',
+                            '/firefox/i'   => 'Firefox',
+                            '/safari/i'    => 'Safari',
+                            '/chrome/i'    => 'Chrome',
+                            '/edge/i'      => 'Edge',
+                            '/opera/i'     => 'Opera',
+                            '/netscape/i'  => 'Netscape',
+                            '/maxthon/i'   => 'Maxthon',
+                            '/konqueror/i' => 'Konqueror',
+                            '/mobile/i'    => 'Handheld Browser'
+                     );
+
+    foreach ($browser_array as $regex => $value)
+        if (preg_match($regex, $user_agent))
+            $browser = $value;
+
+    return $browser;
 }
